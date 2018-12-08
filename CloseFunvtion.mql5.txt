@@ -1,0 +1,19 @@
+void CPD(string order_symbol="",int order_type=-1,int order_magic=-1)
+  {
+   int i,k=OrdersTotal();
+
+   if(order_symbol=="0") order_symbol=Symbol();
+   for(i=k-1; i>=0; i--)
+     {
+      if(OrderSelect(i,SELECT_BY_POS,MODE_TRADES))
+        {
+         if((OrderSymbol()==order_symbol || order_symbol=="") && (order_type<0 || OrderType()==order_type))
+           {
+            if(OrderType()==OP_BUY || OrderType()==OP_SELL)
+              {
+               if(order_magic<0 || OrderMagicNumber()==order_magic) OrderClose(OrderTicket(),OrderLots(),OrderClosePrice(),0,clrNONE);
+              }
+           }
+        }
+     }
+  }
